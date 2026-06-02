@@ -1,0 +1,13 @@
+{
+  "name": "dis-figma-plugin",
+  "version": "0.1.0",
+  "description": "Build a Figma prototype from a Design Interaction Spec (DIS).",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.127.0",
+    "typescript": "^5.9.3"
+  }
+}

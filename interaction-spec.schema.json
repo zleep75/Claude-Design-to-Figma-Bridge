@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/design-interaction-spec/0.1",
+  "title": "Design Interaction Spec (DIS)",
+  "description": "An interchange contract between generated UI (Claude Design / code) and Figma prototypes. It carries what flat HTML-to-Figma converters drop: the screen-to-screen state machine, the trigger intent of each edge, and the design-token system.",
+  "type": "object",
+  "required": ["version", "tokens", "screens", "flow"],
+  "properties": {
+    "version": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "source": { "type": "string", "description": "e.g. claude-design, hand-authored" },
+        "tokenNamespace": { "type": "string" },
+        "persona": { "type": "object", "description": "Optional demo persona that scripts the content." }
+      },
+      "additionalProperties": true
+    },
+    "tokens": {
+      "type": "object",
+      "description": "Design tokens. Each map is name -> value; consumers map these to Figma Variables / styles.",
+      "properties": {
+        "color": { "type": "object", "additionalProperties": { "type": "string" } },
+        "typography": { "type": "object", "additionalProperties": { "type": "string" } },
+        "radius": { "type": "object", "additionalProperties": { "type": ["number", "string"] } },
+        "spacing": { "type": "object", "additionalProperties": { "type": ["number", "string"] } }
+      },
+      "additionalProperties": true
+    },
+    "components": {
+      "type": "array",
+      "description": "Reusable component inventory. Atoms become Figma components; variants become variant properties.",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "type": "string", "enum": ["atom", "screen", "fragment"] },
+          "variants": { "type": "array", "items": { "type": "string" } },
+          "source": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "screens": {
+      "type": "array",
+      "description": "Each addressable UI state becomes one Figma frame.",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "step": { "type": ["integer", "null"] },
+          "component": { "type": ["string", "null"], "description": "Component that renders this screen." },
+          "frame": {
+            "type": ["object", "null"],
+            "description": "Rendered geometry, filled by a render pass over the runnable bundle. Null until then.",
+            "properties": {
+              "width": { "type": "number" },
+              "height": { "type": "number" },
+              "nodes": { "type": "array" }
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "flow": {
+      "type": "object",
+      "description": "The state machine. This is the layer flat converters lose.",
+      "required": ["initial", "transitions"],
+      "properties": {
+        "initial": { "type": "string", "description": "Screen id the prototype starts on." },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to", "trigger"],
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "trigger": { "type": "string", "enum": ["onClick", "onChange", "afterDelay", "onDrag", "whileHovering"] },
+              "intent": { "type": "string", "enum": ["advance", "back", "branch", "restart", "navigate"], "description": "Human meaning of the edge; helps the Figma side pick sensible transition + easing defaults." },
+              "element": { "type": "string", "description": "Stable id/name of the triggering element. Must match a node name in the source frame for Smart Animate to bind." },
+              "to_handler": { "type": "string" },
+              "animation": { "type": "string", "enum": ["smartAnimate", "dissolve", "moveIn", "pushIn", "instant"] },
+              "delayMs": { "type": "number" },
+              "sideEffects": { "type": "array", "items": { "type": "string" }, "description": "e.g. resetState. Figma can't run these; documented so the prototype/dev handoff stays honest." }
+            },
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "lossy": {
+      "type": "array",
+      "description": "In-screen behaviors that Figma's declarative prototype model cannot reproduce. Surfaced explicitly rather than silently dropped.",
+      "items": {
+        "type": "object",
+        "required": ["screen", "kind"],
+        "properties": {
+          "screen": { "type": "string" },
+          "kind": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

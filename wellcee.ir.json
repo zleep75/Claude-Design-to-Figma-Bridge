@@ -1,0 +1,354 @@
+{
+  "version": "0.1",
+  "meta": {
+    "name": "Wellcee AI 资料完善流程",
+    "source": "claude-design",
+    "tokenNamespace": "WC",
+    "persona": {
+      "name": "Sanne",
+      "fromCountry": "荷兰",
+      "city": "上海",
+      "hood": "永康路一带",
+      "job": "UX 设计师",
+      "cat": "毛豆",
+      "budget": "4k–6k"
+    }
+  },
+  "tokens": {
+    "color": {
+      "teal": "#26BCBB",
+      "tealDeep": "#1FA8A6",
+      "tealChip": "#2DB9B8",
+      "tealMint": "#60C9B2",
+      "tealSoft": "#E6F7F6",
+      "tealSofter": "#F1FBFA",
+      "ink": "#1C2A2A",
+      "ink2": "#3A4A4A",
+      "gray": "#9AA5A5",
+      "grayChip": "#F1F2F3",
+      "grayChipInk": "#5A6566",
+      "line": "#ECEEEF",
+      "screenBg": "#F4F5F6",
+      "card": "#FFFFFF",
+      "star": "#FFB23E"
+    },
+    "typography": {
+      "font": "-apple-system, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", system-ui, sans-serif"
+    },
+    "radius": {}
+  },
+  "components": [
+    {
+      "id": "ChatOnboard",
+      "source": "chat.jsx"
+    },
+    {
+      "id": "ManualForm",
+      "source": "directions.jsx"
+    },
+    {
+      "id": "NoteCard",
+      "source": "directions.jsx"
+    },
+    {
+      "id": "ThreeDirections",
+      "source": "directions.jsx"
+    },
+    {
+      "id": "IntroGen",
+      "source": "flow2.jsx"
+    },
+    {
+      "id": "TagPick",
+      "source": "flow2.jsx"
+    },
+    {
+      "id": "RentPrefs",
+      "source": "flow2.jsx"
+    },
+    {
+      "id": "CTADock",
+      "source": "flow2.jsx"
+    },
+    {
+      "id": "AIband",
+      "source": "flow2.jsx"
+    },
+    {
+      "id": "Welcome",
+      "source": "flow3.jsx"
+    },
+    {
+      "id": "DoneTrust",
+      "source": "flow3.jsx"
+    },
+    {
+      "id": "PreviewCard",
+      "source": "flow3.jsx"
+    },
+    {
+      "id": "PlusBtn",
+      "source": "flow3.jsx"
+    },
+    {
+      "id": "IOSDevice",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "IOSStatusBar",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "IOSNavBar",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "IOSGlassPill",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "IOSList",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "IOSListRow",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "IOSKeyboard",
+      "source": "ios-frame.jsx"
+    },
+    {
+      "id": "Sparkle",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "Welly",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "Chip",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "PillButton",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "SectionLabel",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "Card",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "Ring",
+      "source": "tokens.jsx"
+    },
+    {
+      "id": "WCHeader",
+      "source": "tokens.jsx"
+    }
+  ],
+  "screens": [
+    {
+      "id": "welcome",
+      "label": "入口",
+      "step": 1,
+      "component": "Welcome",
+      "frame": null
+    },
+    {
+      "id": "chat",
+      "label": "AI 对话",
+      "step": 2,
+      "component": "ChatOnboard",
+      "frame": null
+    },
+    {
+      "id": "intro",
+      "label": "自我介绍",
+      "step": 3,
+      "component": "IntroGen",
+      "frame": null
+    },
+    {
+      "id": "tags",
+      "label": "智能标签",
+      "step": 4,
+      "component": "TagPick",
+      "frame": null
+    },
+    {
+      "id": "rent",
+      "label": "租房偏好",
+      "step": 5,
+      "component": "RentPrefs",
+      "frame": null
+    },
+    {
+      "id": "done",
+      "label": "完整度",
+      "step": 6,
+      "component": "DoneTrust",
+      "frame": null
+    },
+    {
+      "id": "manual",
+      "label": "manual",
+      "step": null,
+      "component": "ManualForm",
+      "frame": null
+    }
+  ],
+  "flow": {
+    "initial": "welcome",
+    "transitions": [
+      {
+        "from": "welcome",
+        "trigger": "onClick",
+        "intent": "advance",
+        "element": "onStart",
+        "to": "chat",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "welcome",
+        "trigger": "onClick",
+        "intent": "branch",
+        "element": "onManual",
+        "to": "manual",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "chat",
+        "trigger": "onClick",
+        "intent": "advance",
+        "element": "onComplete",
+        "to": "intro",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "chat",
+        "trigger": "onClick",
+        "intent": "branch",
+        "element": "onManual",
+        "to": "manual",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "manual",
+        "trigger": "onClick",
+        "intent": "back",
+        "element": "onBack",
+        "to": "welcome",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "manual",
+        "trigger": "onClick",
+        "intent": "advance",
+        "element": "onNext",
+        "to": "tags",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "manual",
+        "trigger": "onClick",
+        "intent": "branch",
+        "element": "onAskWelly",
+        "to": "chat",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "intro",
+        "trigger": "onClick",
+        "intent": "back",
+        "element": "onBack",
+        "to": "chat",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "intro",
+        "trigger": "onClick",
+        "intent": "advance",
+        "element": "onNext",
+        "to": "tags",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "tags",
+        "trigger": "onClick",
+        "intent": "back",
+        "element": "onBack",
+        "to": "intro",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "tags",
+        "trigger": "onClick",
+        "intent": "advance",
+        "element": "onNext",
+        "to": "rent",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "rent",
+        "trigger": "onClick",
+        "intent": "back",
+        "element": "onBack",
+        "to": "tags",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "rent",
+        "trigger": "onClick",
+        "intent": "advance",
+        "element": "onNext",
+        "to": "done",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "done",
+        "trigger": "onClick",
+        "intent": "back",
+        "element": "onBack",
+        "to": "rent",
+        "animation": "smartAnimate",
+        "sideEffects": []
+      },
+      {
+        "from": "done",
+        "trigger": "onClick",
+        "intent": "restart",
+        "element": "onRestart",
+        "to": "welcome",
+        "animation": "smartAnimate",
+        "sideEffects": [
+          "resetState"
+        ]
+      }
+    ]
+  },
+  "lossy": [
+    {
+      "screen": "chat",
+      "kind": "scripted-timing",
+      "note": "JS timers drive this screen; Figma can show end-state or a 2-frame smart-animate only."
+    }
+  ]
+}
